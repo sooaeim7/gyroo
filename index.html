@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GYRO ZEPPELI — Steel Ball Run</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f0d78c;
+            --dark: #0a0a0f;
+            --darker: #050508;
+            --accent: #8b0000;
+            --text: #e8e0d0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--darker);
+            color: var(--text);
+            font-family: 'Cinzel', serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ===== NAV ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(5,5,8,0.95) 0%, transparent 100%);
+            padding: 1.2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(212,175,55,0.4);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: color 0.3s, text-shadow 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+            text-shadow: 0 0 12px rgba(212,175,55,0.6);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: 
+                radial-gradient(ellipse at 30% 20%, rgba(139,0,0,0.25) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(212,175,55,0.15) 0%, transparent 50%),
+                linear-gradient(180deg, #0a0a0f 0%, #050508 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="none" stroke="%23d4af37" stroke-opacity="0.03" width="100" height="100"/></svg>');
+            opacity: 0.5;
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3rem, 10vw, 7rem);
+            font-weight: 700;
+            letter-spacing: 12px;
+            color: var(--gold);
+            text-shadow: 
+                0 0 40px rgba(212,175,55,0.5),
+                0 0 80px rgba(212,175,55,0.2),
+                4px 4px 0 #8b0000;
+            animation: glowPulse 3s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--gold-light);
+            margin-top: 1rem;
+            opacity: 0.85;
+            z-index: 1;
+        }
+
+        .hero-tagline {
+            margin-top: 2.5rem;
+            font-size: 1.1rem;
+            max-width: 600px;
+            font-style: italic;
+            color: #b8a990;
+            z-index: 1;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { text-shadow: 0 0 40px rgba(212,175,55,0.5), 0 0 80px rgba(212,175,55,0.2), 4px 4px 0 #8b0000; }
+            50% { text-shadow: 0 0 60px rgba(212,175,55,0.7), 0 0 120px rgba(212,175,55,0.3), 4px 4px 0 #8b0000; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            min-height: 100vh;
+            padding: 6rem 8%;
+            display: flex;
+            align-items: center;
+            position: relative;
+            border-top: 1px solid rgba(212,175,55,0.15);
+        }
+
+        section:nth-child(even) {
+            background: linear-gradient(135deg, #08080c 0%, #0c0a10 100%);
+        }
+
+        section:nth-child(odd) {
+            background: linear-gradient(135deg, #0a0a0f 0%, #0e0c12 100%);
+        }
+
+        .section-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .section-inner.reverse {
+            direction: rtl;
+        }
+
+        .section-inner.reverse > * {
+            direction: ltr;
+        }
+
+        .content h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            color: var(--gold);
+            letter-spacing: 6px;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .content .number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: var(--accent);
+            letter-spacing: 4px;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .content p {
+            font-size: 1.05rem;
+            color: #c8bda8;
+            margin-bottom: 1.2rem;
+            max-width: 520px;
+        }
+
+        .content .quote {
+            font-style: italic;
+            color: var(--gold-light);
+            border-left: 3px solid var(--gold);
+            padding-left: 1.2rem;
+            margin: 1.8rem 0;
+            font-size: 1.15rem;
+        }
+
+        .image-frame {
+            position: relative;
+            border: 2px solid var(--gold);
+            box-shadow: 
+                0 0 40px rgba(212,175,55,0.15),
+                0 20px 60px rgba(0,0,0,0.6);
+            overflow: hidden;
+            transform: perspective(1000px) rotateY(-3deg);
+            transition: transform 0.5s, box-shadow 0.5s;
+        }
+
+        .image-frame:hover {
+            transform: perspective(1000px) rotateY(0deg) scale(1.02);
+            box-shadow: 
+                0 0 60px rgba(212,175,55,0.3),
+                0 25px 80px rgba(0,0,0,0.7);
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: contrast(1.05) saturate(1.1);
+            transition: filter 0.4s;
+        }
+
+        .image-frame:hover img {
+            filter: contrast(1.1) saturate(1.2);
+        }
+
+        .image-frame::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 60%, rgba(212,175,55,0.08) 100%);
+            pointer-events: none;
+        }
+
+        .image-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(5,5,8,0.9));
+            padding: 1.5rem 1.2rem 1rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--darker);
+            border-top: 1px solid rgba(212,175,55,0.2);
+            padding: 3rem;
+            text-align: center;
+        }
+
+        footer p {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            color: var(--gold);
+            opacity: 0.7;
+        }
+
+        footer .small {
+            margin-top: 0.8rem;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: #666;
+            font-family: 'Cinzel', serif;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .section-inner,
+            .section-inner.reverse {
+                grid-template-columns: 1fr;
+                direction: ltr;
+                gap: 2.5rem;
+            }
+
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                gap: 1.2rem;
+            }
+
+            .nav-links a {
+                font-size: 0.7rem;
+            }
+
+            section {
+                padding: 4rem 6%;
+            }
+
+            .image-frame {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="logo">GYRO ZEPPELI</div>
+        <ul class="nav-links">
+            <li><a href="#historia">Historia</a></li>
+            <li><a href="#personalidad">Personalidad</a></li>
+            <li><a href="#habilidades">Habilidades</a></li>
+            <li><a href="#amistad">Amistad</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+        <h1 class="hero-title">GYRO ZEPPELI</h1>
+        <p class="hero-subtitle">Julius Caesar Zeppeli</p>
+        <p class="hero-tagline">“El camino de la justicia no es recto… pero es el único que vale la pena recorrer.”</p>
+        <div class="scroll-hint">▼ DESLIZA ▼</div>
+    </header>
+
+    <!-- 1. HISTORIA -->
+    <section id="historia">
+        <div class="section-inner">
+            <div class="content">
+                <span class="number">01 — ORIGEN</span>
+                <h2>Historia</h2>
+                <p>
+                    Nacido en el seno de la legendaria familia Zeppeli, Gyro hereda no solo el nombre, 
+                    sino el peso de generaciones dedicadas a la técnica del <strong>Spin</strong>. 
+                    Su verdadero nombre, Julius Caesar Zeppeli, es un secreto que solo revela a aquellos 
+                    en quienes confía plenamente.
+                </p>
+                <p>
+                    En 1890 se une a la carrera de caballos más peligrosa del mundo: la 
+                    <em>Steel Ball Run</em>. Su objetivo no es solo la gloria… sino salvar a un niño 
+                    condenado por una injusticia del sistema judicial napolitano.
+                </p>
+                <div class="quote">
+                    “No corro por el dinero. Corro porque alguien tiene que pagar el precio de la justicia.”
+                </div>
+            </div>
+            <div class="image-frame">
+                <img src="images/gyro1.jpg" alt="Gyro Zeppeli - Historia">
+                <div class="image-label">El jinete de las esferas de acero</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. PERSONALIDAD -->
+    <section id="personalidad">
+        <div class="section-inner reverse">
+            <div class="content">
+                <span class="number">02 — CARÁCTER</span>
+                <h2>Personalidad</h2>
+                <p>
+                    Gyro es un hombre de contrastes. Por fuera: arrogante, sarcástico, con un sentido 
+                    del humor negro que desarma. Por dentro: un idealista férreo que carga con el peso 
+                    de su linaje y de una promesa que no puede romper.
+                </p>
+                <p>
+                    Odia la injusticia con cada fibra de su ser. Su lealtad es absoluta una vez ganada, 
+                    y su código moral —aunque peculiar— es inquebrantable. Le encanta comer, beber 
+                    y burlarse de su compañero Johnny… pero nunca lo abandonaría.
+                </p>
+                <div class="quote">
+                    “La justicia no es ciega. Es un caballo salvaje que hay que domesticar con el Spin.”
+                </div>
+            </div>
+            <div class="image-frame">
+                <img src="images/gyro2.jpg" alt="Gyro Zeppeli - Personalidad">
+                <div class="image-label">Sonrisa de depredador</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. HABILIDADES -->
+    <section id="habilidades">
+        <div class="section-inner">
+            <div class="content">
+                <span class="number">03 — PODER</span>
+                <h2>Habilidades</h2>
+                <p>
+                    Maestro absoluto de la <strong>técnica del Spin</strong>, Gyro utiliza dos esferas 
+                    de acero perfectamente equilibradas como armas y herramientas de sanación. 
+                    El Spin le permite manipular la rotación de la materia a nivel molecular.
+                </p>
+                <p>
+                    Su Stand, <strong>Ball Breaker</strong>, representa la culminación del Spin infinito: 
+                    capaz de acelerar el envejecimiento de cualquier objetivo y romper las barreras 
+                    del tiempo y el espacio. Un poder que solo los Zeppeli más determinados pueden alcanzar.
+                </p>
+                <div class="quote">
+                    “El Spin perfecto no tiene final… solo un nuevo comienzo.”
+                </div>
+            </div>
+            <div class="image-frame">
+                <img src="images/gyro3.jpg" alt="Gyro Zeppeli - Habilidades">
+                <div class="image-label">Ball Breaker — El Spin Infinito</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. AMISTAD -->
+    <section id="amistad">
+        <div class="section-inner reverse">
+            <div class="content">
+                <span class="number">04 — VÍNCULO</span>
+                <h2>Amistad</h2>
+                <p>
+                    La relación entre Gyro y <strong>Johnny Joestar</strong> es el corazón de Steel Ball Run. 
+                    Lo que comienza como una alianza de conveniencia se transforma en una de las amistades 
+                    más profundas y trágicas de toda la saga JoJo.
+                </p>
+                <p>
+                    Gyro enseña a Johnny el Spin. Johnny le enseña a Gyro que la justicia también puede 
+                    nacer del perdón y de la esperanza. Juntos enfrentan a Valentine, a las fuerzas 
+                    del destino y a sus propios demonios.
+                </p>
+                <div class="quote">
+                    “Johnny… no me dejes solo en este camino. Porque yo tampoco te dejaré a ti.”
+                </div>
+            </div>
+            <div class="image-frame">
+                <img src="images/amistad.jpg" alt="Gyro y Johnny - Amistad">
+                <div class="image-label">Dos jinetes, un destino</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>GYRO ZEPPELI — STEEL BALL RUN</p>
+        <p class="small">“Nyo-ho!” • JoJo’s Bizarre Adventure Part 7</p>
+    </footer>
+
+</body>
+</html>
